@@ -1,0 +1,71 @@
+#!/usr/bin/expect
+
+
+# Set a timeout for each expect command. Adjust as necessary.
+set timeout 120
+
+# Ensure the correct number of arguments are provided.
+if { $argc != 4 } {
+    send_user "Usage: $argv0 auth_key mode index 'question'\n"
+    exit 1
+  }
+
+  # Retrieve command-line arguments.
+  set auth_key [lindex $argv 0]
+  set mode [lindex $argv 1]
+  set index [lindex $argv 2]
+  set question [lindex $argv 3]
+
+# Specify the output file path for saving the response
+set output_file "/home/dhirajdarakhe/Documents/fantastic6/${index}final_response.txt"
+
+
+# Launch bito with the specified key and mode.
+spawn bito -k $auth_key -m $mode
+sleep 1
+# Wait for bito to be ready for input.
+expect "bito>"
+
+# Navigate to the index selection.
+send "/localcode selectindex\r"
+sleep 2
+expect "Choose a index to load:"
+send "$index\r"
+
+sleep 2
+expect "Your selected index: /home/dhirajdarakhe/Documents"
+
+sleep 3
+# Ensure we're back at the bito prompt before sending the question.
+expect "bito>"
+
+# Send the question and the signal to end input.
+send "$question\r"
+send "\004"
+
+sleep 5
+# Wait for and capture the final response.
+expect "bito response>"
+
+sleep 5
+# Capture everything until back to bito prompt to ensure we get the complete response.
+expect "bito>"
+set final_response $expect_out(buffer)
+
+# Open the specified output file in write mode
+set file [open $output_file "w"]
+
+puts $file $question
+# Write the full output (stored in final_response) to the file
+puts $file $final_response
+
+# Close the file to ensure the output is saved
+close $file
+
+# Inform the user the response has been saved
+send_user "Response has been saved to $output_file\n"
+
+# Exit the script gracefully.
+send "quit\r"
+send "\004"
+expect eof
