@@ -20,7 +20,7 @@ if { $argc != 4 } {
 set current_dir [exec pwd]
 
 # Specify the output file path for saving the response
-set output_file "${current_dir}/output/${index}final_response.txt"
+set output_file "${current_dir}/output/final_response.txt"
 
 
 # Launch bito with the specified key and mode.
