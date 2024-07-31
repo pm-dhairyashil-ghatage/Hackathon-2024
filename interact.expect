@@ -16,8 +16,11 @@ if { $argc != 4 } {
   set index [lindex $argv 2]
   set question [lindex $argv 3]
 
+# Get the current working directory
+set current_dir [exec pwd]
+
 # Specify the output file path for saving the response
-set output_file "/home/dhirajdarakhe/Documents/fantastic6/${index}final_response.txt"
+set output_file "${current_dir}/output/${index}final_response.txt"
 
 
 # Launch bito with the specified key and mode.
@@ -33,7 +36,7 @@ expect "Choose a index to load:"
 send "$index\r"
 
 sleep 2
-expect "Your selected index: /home/dhirajdarakhe/Documents"
+expect "Your selected index: $index"
 
 sleep 3
 # Ensure we're back at the bito prompt before sending the question.
