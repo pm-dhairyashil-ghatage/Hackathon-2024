@@ -4,7 +4,8 @@ import subprocess, os
 
 # Constants
 script_path = f"{os.getcwd()}/interact.expect"
-index_dict = {"Prebid.js": 2,2:"Prebid.js","OW prebid Fork": 3,3:"OW prebid Fork","LLM Data": 7}
+index_dict = {"Prebid.js": 2,"OW prebid Fork": 3,"Both repo": 4 ,"Confluence data":5}
+reverse_index_dict={2:"Prebid.js",3:"OW prebid Fork"}
 
 # Define default values for the inputs
 default_auth_key = "eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjoidjFfNjk0NF8xMzExODYwXzI1MV9XZWQgSnVsIDMxIDA2OjU0OjQxIFVUQyAyMDI0In0.j2tsyo_zUn5JRiygcebhcJtGJP7uq61BKM2E9ARU4Vw"
@@ -114,7 +115,7 @@ if st.button('Get Info'):
             with open(output_file, 'r') as file:
                 output_contents = file.read()
 
-            question= question+output_contents+f"refering this from {index_dict.get(int(index))}.+respond in 200 words only"
+            question= question+output_contents+f"refering this from {index_dict.get(int(index))}.respond in 200 words only"
         
 
         # Check for errors in script execution
