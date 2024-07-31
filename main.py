@@ -49,14 +49,14 @@ st.title("Prebid Wiki")
 st.write("This is a Advanced tool to answer your queries about Prebid Code")
 
 # Define default values for the inputs
-default_auth_key = "eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjoidjFfNjkyNV8xMTIxNzg0XzI1MV9UdWUgSnVsIDMwIDEyOjA3OjMxIFVUQyAyMDI0In0.RCzIvqiGZ8Svn213CXmHdpzTxN6sxfNCdLv9dItrntU"
-default_mode = "ADVANCED"
-index_dict = {"Prebid_1.js": 5,"Prebid.js": 6,"LLM Data": 7}
+default_auth_key = "eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjoidjFfNjk0NF8xMzExODYwXzI1MV9XZWQgSnVsIDMxIDA2OjU0OjQxIFVUQyAyMDI0In0.j2tsyo_zUn5JRiygcebhcJtGJP7uq61BKM2E9ARU4Vw"
+default_mode = "BASIC"
+index_dict = {"Prebid.js": 2,"OW prebid Fork": 3,"LLM Data": 7}
 default_question = "in one paragraph, how does publisher allowlist inline upload api work?"
 
 
 # Create multiselect field for project index
-index = ["Prebid_1.js", "Prebid.js", "LLM Data"]
+index = ["Prebid.js", "OW prebid Fork", "LLM Data"]
 index_response = st.selectbox("Select a project", index, placeholder="Choose an option", disabled=False, label_visibility="visible")
 
 suggested_questions_list = ["Fetch release notes for OW as per version", "Fetch release notes for OW as per date",
@@ -71,19 +71,21 @@ ques_select = st.selectbox("Suggested Questions", suggested_questions_list, None
 
 # Create input fields in the Streamlit app
 question = st.text_input("Question", value=default_question)
-question = question if ques_select is None else ques_select + " in my code"
+question = question + " in my code"
 
 
 print(question)
 
-selected_value_for_cmd = index_dict.get(index_response, 6)  # Default value if no checkbox is selected
+selected_value_for_cmd = str(index_dict.get(index_response, 6))  # Default value if no checkbox is selected
 output_file_name = str(selected_value_for_cmd) + "final_response.txt"
 
-output_file = f"/home/dhirajdarakhe/Documents/fantastic6/{output_file_name}"
+output_file = f"output/{output_file_name}"
 
 
 # Absolute path to the script
-script_path = "/home/dhirajdarakhe/Documents/fantastic6/interact.expect"
+script_path = f"{os.getcwd()}/interact.expect"
+
+print(script_path)
 
 # Button to trigger the script
 if st.button('Get Info'):
@@ -93,11 +95,11 @@ if st.button('Get Info'):
     with open(output_file, 'w') as file:
         file.truncate(0)
 
-    # Change the current working directory
-    os.chdir('/home/dhirajdarakhe/Documents/fantastic6')
+    # # Change the current working directory
+    # os.chdir('/home/dhirajdarakhe/Documents/fantastic6')
     
     # Construct the command to run the script using the absolute path
-    cmd = [script_path, default_auth_key, default_mode, selected_value_for_cmd, question]
+    cmd = [script_path, default_auth_key, default_mode,selected_value_for_cmd, question]
 
     print("Current working directory before subprocess call:", os.getcwd())
 
