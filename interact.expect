@@ -5,7 +5,7 @@
 set timeout 120
 
 # Ensure the correct number of arguments are provided.
-if { $argc != 4 } {
+if { $argc != 5} {
     send_user "Usage: $argv0 auth_key mode index 'question'\n"
     exit 1
   }
@@ -15,6 +15,7 @@ if { $argc != 4 } {
   set mode [lindex $argv 1]
   set index [lindex $argv 2]
   set question [lindex $argv 3]
+  set c [lindex $argv 4]
 
 # Get the current working directory
 set current_dir [exec pwd]
@@ -55,9 +56,9 @@ expect "bito>"
 set final_response $expect_out(buffer)
 
 # Open the specified output file in write mode
-set file [open $output_file "w"]
+set file [open $output_file $c]
 
-puts $file $question
+# puts $file $question
 # Write the full output (stored in final_response) to the file
 puts $file $final_response
 
