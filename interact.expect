@@ -36,9 +36,9 @@ expect "Choose a index to load:"
 send "$index\r"
 
 sleep 2
-expect "Your selected index: $index"
+expect "Your selected index: "
 
-sleep 3
+
 # Ensure we're back at the bito prompt before sending the question.
 expect "bito>"
 
@@ -46,11 +46,10 @@ expect "bito>"
 send "$question\r"
 send "\004"
 
-sleep 5
 # Wait for and capture the final response.
 expect "bito response>"
 
-sleep 5
+
 # Capture everything until back to bito prompt to ensure we get the complete response.
 expect "bito>"
 set final_response $expect_out(buffer)
