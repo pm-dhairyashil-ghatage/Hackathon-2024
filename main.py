@@ -54,15 +54,30 @@ default_mode = "ADVANCED"
 index_dict = {"Prebid_1.js": 5,"Prebid.js": 6,"LLM Data": 7}
 default_question = "in one paragraph, how does publisher allowlist inline upload api work?"
 
+
+# Create multiselect field for project index
+index = ["Prebid_1.js", "Prebid.js", "LLM Data"]
+index_response = st.selectbox("Select a project", index, placeholder="Choose an option", disabled=False, label_visibility="visible")
+
+suggested_questions_list = ["Fetch release notes for OW as per version", "Fetch release notes for OW as per date",
+                            "Fetch release notes for Prebid as per version",
+                            "Fetch release notes for Prebid as per date",
+                            "New feature in selected release",
+                            "Supported platform for given partner",
+                            "Status of given partner in OpenWrap",
+                            "Changes in partner in specific release"]
+
+ques_select = st.selectbox("Suggested Questions", suggested_questions_list, None, help="Select any question from the suggested list of questions", placeholder="Choose an option", disabled=False, label_visibility="visible")
+
 # Create input fields in the Streamlit app
 question = st.text_input("Question", value=default_question)
-question = question + " in my code"
+question = question if ques_select is None else ques_select + " in my code"
 
 
 print(question)
 
-selected_value_for_cmd = "6"  # Default value if no checkbox is selected
-output_file_name = selected_value_for_cmd + "final_response.txt"
+selected_value_for_cmd = index_dict.get(index_response, 6)  # Default value if no checkbox is selected
+output_file_name = str(selected_value_for_cmd) + "final_response.txt"
 
 output_file = f"/home/dhirajdarakhe/Documents/fantastic6/{output_file_name}"
 
@@ -82,7 +97,7 @@ if st.button('Get Info'):
     os.chdir('/home/dhirajdarakhe/Documents/fantastic6')
     
     # Construct the command to run the script using the absolute path
-    cmd = [script_path, default_auth_key, default_mode,selected_value_for_cmd, question]
+    cmd = [script_path, default_auth_key, default_mode, selected_value_for_cmd, question]
 
     print("Current working directory before subprocess call:", os.getcwd())
 
